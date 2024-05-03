@@ -18,14 +18,14 @@
 
 # COMMAND ----------
 
-scopo-kv-bootcamp-prd-wsy
+scopo-kv-bootcamp-prd-aps
 
 # COMMAND ----------
 
 dbutils.fs.mount(
-    source = "wasbs://sandbox@dlsbootcampprdwsy.blob.core.windows.net"
+    source = "wasbs://sandbox@dlsbootcampprdaps.blob.core.windows.net"
     ,mount_point = "/mnt/sandbox/"
-    ,extra_configs = {"fs.azure.account.key.dlsbootcampprdwsy.blob.core.windows.net" :dbutils.secrets.get(scope = "scopo-kv-bootcamp-prd-wsy", key = "secret-dlsbootcampprdwsy")}
+    ,extra_configs = {"fs.azure.account.key.dlsbootcampprdaps.blob.core.windows.net" :dbutils.secrets.get(scope = "scopo-kv-bootcamp-prd-aps22", key = "secret-dlsbootcampprdaps")}
 )
 
 # COMMAND ----------
@@ -46,13 +46,13 @@ dbutils.fs.unmount( f"/mnt/transient/")
 
 # COMMAND ----------
 
-config =  {"fs.azure.account.key.dlsbootcampprdwsy.blob.core.windows.net" :dbutils.secrets.get(scope = "scopo-kv-bootcamp-prd-wsy", key = "secret-dlsbootcampprdwsy")}
+config =  {"fs.azure.account.key.dlsbootcampprdaps.blob.core.windows.net" :dbutils.secrets.get(scope = "scopo-kv-bootcamp-prd-aps22", key = "secret-dlsbootcampprdaps")}
 
 # COMMAND ----------
 
 # DBTITLE 1,Lista de diretórios do lake 
 #apenas os diretórios que vamos interagir
-diretorios = ['transient','raw','delta','sandbox','gerencia']
+diretorios = ['raw','transient']
 
 # COMMAND ----------
 
@@ -61,16 +61,16 @@ def mount_diretorio_lake(lst_diretorios):
     try:        
         for diretorio in lst_diretorios:
             dbutils.fs.mount(
-                source = f"wasbs://{diretorio}@dlsbootcampprdwsy.blob.core.windows.net"
+                source = f"wasbs://{diretorio}@dlsbootcampprdaps.blob.core.windows.net"
                 ,mount_point = f"/mnt/{diretorio}/"
                 ,extra_configs = config
             )
-            print(f"{diretorio} = ok")
+            print(f"{diretorio} = ok")  
             
     except ValueError as error:
         print(error)
         
-mount_diretorio_lake(diretorios)        
+mount_diretorio_lake(diretorios)
 
 # COMMAND ----------
 
@@ -89,7 +89,7 @@ unmount_diretorio_lake(diretorios)
 # COMMAND ----------
 
 # DBTITLE 1,listando diretórios no DBFS com o dbutils
-dbutils.fs.ls("/mnt/raw/apis/instrutores/")
+dbutils.fs.ls("/mnt/sandbox/")
 
 # COMMAND ----------
 
